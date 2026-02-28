@@ -5,6 +5,8 @@ A database systems class project modeling a game's item inventory, crafting reci
 
 ## How to Run
 
-To reset database:
+## How to Reset Database:
+1) Run 03_delete.sql
+2) Re-run 02_seeds.sql
 
 ## Database Name
