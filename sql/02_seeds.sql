@@ -4,15 +4,15 @@ USE arc_raiders;
 -- USERS
 INSERT INTO users (user_id, username, password, email, first_name, last_name, gamer_tag, is_admin)
 VALUES
-  (1, 'braden', 'pass12345678', 'braden@byu.edu', 'Braden', 'Kim', 'BKRaid', TRUE),
-  (2, 'joshd',  'hunter2aaaaa', 'joshd@byu.edu',  'Joshua', 'Davis',  'JD', FALSE),
-  (3, 'danl',   'abc123abc123', 'danl@byu.edu',   'Daniel', 'Layton', 'DL', FALSE);
+  (1, 'brade', 'pass12345678', 'b@byu.edu', 'Braden', 'K', 'BKRaid', TRUE),
+  (2, 'josh',  'hunter2aaaaa', 'd@byu.edu',  'Joshua', 'D',  'JD', FALSE),
+  (3, 'danl',   'abc123abc123', 'j@byu.edu',   'Daniel', 'L', 'DL', FALSE);
 
 -- SESSIONS
 INSERT INTO sessions (session_id, user_id, cookie)
 VALUES
   (1, 1, 'cookie_braden_001'),
-  (2, 2, 'cookie_joshd_001'),
+  (2, 2, 'cookie_josh_001'),
   (3, 3, 'cookie_danl_001');
 
 -- LOOT (catalog)
