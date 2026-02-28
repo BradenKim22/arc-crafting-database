@@ -93,7 +93,7 @@ CREATE TABLE workbenches (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
     ON DELETE CASCADE,
 
-  CONSTRAINT chk_workbench_level CHECK (level >= 1 AND level <= 10)
+  CONSTRAINT chk_workbench_level CHECK (level >= 1 AND level <= 3)
 );
 
 -- =========================
