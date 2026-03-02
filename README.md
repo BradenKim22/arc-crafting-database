@@ -2,7 +2,12 @@
 A database systems class project modeling a game's item inventory, crafting recipes, and item transformations to reach your goal.
 
 ## Software Used
-
+- MySQL Server 8+
+- MySQL Workbench
+- ERDPlus
+- VS Code
+- GitHub
+  
 ## How to Run
 
 ## How to Reset Database:
