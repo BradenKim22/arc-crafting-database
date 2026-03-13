@@ -2,7 +2,7 @@ CREATE VIEW UserInventory AS
 SELECT 
     u.UserID,
     u.FirstName + ' ' + u.LastName AS FullName,
-    l.ID AS ItemID,
+    l.LootID AS ItemID,
     l.Name AS ItemName,
     l.Category,
     l.Rarity,
@@ -18,7 +18,7 @@ SELECT
     w.Category AS WorkbenchType,
     w.Level AS RequiredWorkbenchLevel
 FROM BLUEPRINTS b
-JOIN LOOT l ON b.LootID = l.ID -- Assumes 'Use' relationship links Blueprint to Loot
+JOIN LOOT l ON b.LootID = l.LootID -- Assumes 'Use' relationship links Blueprint to Loot
 JOIN WORKBENCH w ON b.WorkbenchID = w.WorkbenchID; -- Assumes 'Require' relationship
 
 
