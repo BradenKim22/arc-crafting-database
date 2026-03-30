@@ -151,3 +151,12 @@ CREATE TABLE loot_locations (
     FOREIGN KEY (LootID) REFERENCES loot(LootID)
     ON DELETE CASCADE
 );
+
+CREATE TABLE loot_breakdown (
+    loot_id INT NOT NULL,           -- the item that can be broken down
+    component_loot_id INT NOT NULL, -- what it breaks into
+    quantity INT NOT NULL,          -- how many units you get
+    PRIMARY KEY (loot_id, component_loot_id),
+    FOREIGN KEY (loot_id) REFERENCES loot(loot_id),
+    FOREIGN KEY (component_loot_id) REFERENCES loot(loot_id)
+);
