@@ -283,3 +283,11 @@ VALUES
   (3, 'Research Facility'),
   (4, 'Power Station'),
   (5, 'Forest Outskirts');
+
+INSERT INTO loot_breakdown (loot_id, component_loot_id, quantity)
+VALUES
+  (6, 1, 2),  -- RepairKit breaks down into ScrapMetal x2
+  (6, 5, 1),  -- RepairKit also gives NanoFiber x1
+  (7, 2, 2),  -- Scanner breaks down into CircuitBoard x2
+  (7, 3, 1),
+  (7, 4, 1);
