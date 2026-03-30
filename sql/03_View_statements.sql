@@ -58,3 +58,39 @@ SELECT
     'Requires: ' + Components AS ItemDescription,
     'Workbench Craft' AS AcquisitionMethod
 FROM BLUEPRINTS;
+
+DROP VIEW IF EXISTS CraftingRecipes;
+GO
+
+CREATE VIEW CraftingRecipes AS
+SELECT
+    b.blueprint_id            AS BlueprintID,
+    b.name                    AS BlueprintName,
+
+    l_out.loot_id             AS OutputItemID,
+    l_out.name                AS OutputItemName,
+    l_out.category            AS OutputCategory,
+    l_out.rarity              AS OutputRarity,
+
+    l_comp.loot_id            AS ComponentItemID,
+    l_comp.name               AS ComponentName,
+    bc.quantity_required      AS QuantityRequired,
+
+    l_break.name              AS BreaksInto,
+    lb.quantity               AS BreakdownQuantity
+
+FROM blueprints b
+JOIN loot l_out 
+    ON b.output_loot_id = l_out.loot_id
+
+JOIN blueprint_components bc 
+    ON b.blueprint_id = bc.blueprint_id
+
+JOIN loot l_comp 
+    ON bc.loot_id = l_comp.loot_id
+
+LEFT JOIN loot_breakdown lb 
+    ON l_comp.loot_id = lb.loot_id
+
+LEFT JOIN loot l_break 
+    ON lb.component_loot_id = l_break.loot_id;
