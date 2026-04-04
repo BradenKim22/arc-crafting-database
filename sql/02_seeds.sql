@@ -2,21 +2,21 @@
 USE arc_raiders;
 
 -- USERS
-INSERT INTO users (user_id, username, password, email, first_name, last_name, gamer_tag, is_admin)
+INSERT INTO users (UserID, Username, Password, Email, FirstName, LastName, GamerTag, IsAdmin)
 VALUES
   (1, 'brade', 'pass12345678', 'b@byu.edu', 'Braden', 'K', 'BKRaid', TRUE),
   (2, 'josh',  'hunter2aaaaa', 'd@byu.edu',  'Joshua', 'D',  'JD', FALSE),
   (3, 'danl',   'abc123abc123', 'j@byu.edu',   'Daniel', 'L', 'DL', FALSE);
 
 -- SESSIONS
-INSERT INTO sessions (session_id, user_id, cookie)
+INSERT INTO sessions (SessionID, UserID, Cookie)
 VALUES
   (1, 1, 'cookie_braden_001'),
   (2, 2, 'cookie_josh_001'),
   (3, 3, 'cookie_danl_001');
 
 -- LOOT (catalog)
-INSERT INTO loot (loot_id, name, description, rarity, category)
+INSERT INTO loot (LootID, Name, Description, Rarity, Category)
 VALUES
 (1,'Advanced ARC Powercell','valuable resource that drops from certain ARC enemies','Rare','Arc (high level enemies)'),
 (2,'Advanced Electrical Components','Used to craft a wide range of Items, can be recycled into crafting materials','Rare','Electrical'),
@@ -177,7 +177,7 @@ VALUES
 (157,'Rubber Pad','Can be recycled into rubber parts.','Rare','Electrical'),
 (158,'Rubber Parts','Used to craft a wide range of items.','Common','Mechanical, Industrial or Electrical'),
 (159,'Ruined Accordion','Can be recycled into crafting materials.','Rare','Residential'),
-(160,'Ruined Augment','An augment ruined beyond repair.','NULL','Combat'),
+(160,'Ruined Augment','An augment ruined beyond repair.','Common','Combat'),
 (161,'Ruined Baton','Can be recycled into crafting materials.','Uncommon','Security'),
 (162,'Ruined Handcuffs','Can be recycled into crafting materials.','Uncommon','Security'),
 (163,'Ruined Parachute','Can be recycled into crafting materials.','Uncommon','Exodus'),
@@ -229,7 +229,7 @@ VALUES
 (209,'Wires','Used to craft a wide range of items. Can be recycled into crafting materials.','Uncommon','Electrical or Technological');
 
 -- USER_LOOT (inventories)
-INSERT INTO user_loot (user_id, loot_id, quantity)
+INSERT INTO user_loot (UserID, LootID, Quantity)
 VALUES
   (1, 1, 25),
   (1, 2, 10),
@@ -241,7 +241,7 @@ VALUES
   (3, 4, 1);
 
 -- WORKBENCHES
-INSERT INTO workbenches (workbench_id, user_id, category, level)
+INSERT INTO workbenches (WorkbenchID, UserID, Category, level)
 VALUES
   (1, 1, 'Crafting', 3),
   (2, 2, 'Crafting', 1),
@@ -249,7 +249,7 @@ VALUES
 
 -- BLUEPRINTS
 -- Blueprint crafts ONE output item (output_loot_id)
-INSERT INTO blueprints (blueprint_id, user_id, name, output_loot_id)
+INSERT INTO blueprints (BlueprintID, UserID, Name, OutputLootID)
 VALUES
   (1, 1, 'Craft RepairKit', 6),
   (2, 1, 'Craft Scanner', 7),
@@ -257,26 +257,26 @@ VALUES
 
 -- BLUEPRINT COMPONENTS (quantities required)
 -- RepairKit requires: ScrapMetal x2, NanoFiber x1
-INSERT INTO blueprint_components (blueprint_id, loot_id, quantity_required)
+INSERT INTO blueprint_components (BlueprintID, LootID, QuantityRequired)
 VALUES
   (1, 1, 2),
   (1, 5, 1);
 
 -- Scanner requires: CircuitBoard x2, OpticLens x1, PowerCell x1
-INSERT INTO blueprint_components (blueprint_id, loot_id, quantity_required)
+INSERT INTO blueprint_components (BlueprintID, LootID, QuantityRequired)
 VALUES
   (2, 2, 2),
   (2, 3, 1),
   (2, 4, 1);
 
 -- CircuitBoard requires: ScrapMetal x3, NanoFiber x1
-INSERT INTO blueprint_components (blueprint_id, loot_id, quantity_required)
+INSERT INTO blueprint_components (BlueprintID, LootID, QuantityRequired)
 VALUES
   (3, 1, 3),
   (3, 5, 1);
 
 -- LOOT LOCATIONS (optional future support)
-INSERT INTO loot_locations (loot_id, location_name)
+INSERT INTO loot_locations (LootID, LocationName)
 VALUES
   (1, 'Industrial Zone'),
   (2, 'Radio Tower'),
@@ -284,7 +284,7 @@ VALUES
   (4, 'Power Station'),
   (5, 'Forest Outskirts');
 
-INSERT INTO loot_breakdown (loot_id, component_loot_id, quantity)
+INSERT INTO loot_breakdown (LootID, component_loot_id, quantity)
 VALUES
   (6, 1, 2),  -- RepairKit breaks down into ScrapMetal x2
   (6, 5, 1),  -- RepairKit also gives NanoFiber x1

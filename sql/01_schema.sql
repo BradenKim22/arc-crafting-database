@@ -47,12 +47,12 @@ CREATE TABLE sessions (
 -- =========================
 CREATE TABLE loot (
   LootID INT AUTO_INCREMENT PRIMARY KEY,
-  Name VARCHAR(20) NOT NULL UNIQUE,
+  Name VARCHAR(100) NOT NULL UNIQUE,
   Description VARCHAR(100) NOT NULL,
-  Rarity VARCHAR(10) NOT NULL,
-  Category VARCHAR(20) NOT NULL,
+  Rarity VARCHAR(20) NOT NULL,
+  Category VARCHAR(100) NOT NULL,
 
-  CONSTRAINT chk_loot_name_len CHECK (CHAR_LENGTH(Name) <= 20),
+  CONSTRAINT chk_loot_name_len CHECK (CHAR_LENGTH(Name) <= 100),
   CONSTRAINT chk_loot_desc_len CHECK (CHAR_LENGTH(Description) <= 100),
   CONSTRAINT chk_loot_rarity CHECK (Rarity IN ('Common','Uncommon','Rare','Epic','Legendary'))
 );
@@ -153,10 +153,10 @@ CREATE TABLE loot_locations (
 );
 
 CREATE TABLE loot_breakdown (
-    loot_id INT NOT NULL,           -- the item that can be broken down
+    LootID INT NOT NULL,           -- the item that can be broken down
     component_loot_id INT NOT NULL, -- what it breaks into
     quantity INT NOT NULL,          -- how many units you get
-    PRIMARY KEY (loot_id, component_loot_id),
-    FOREIGN KEY (loot_id) REFERENCES loot(loot_id),
-    FOREIGN KEY (component_loot_id) REFERENCES loot(loot_id)
+    PRIMARY KEY (LootID, component_loot_id),
+    FOREIGN KEY (LootID) REFERENCES loot(LootID),
+    FOREIGN KEY (component_loot_id) REFERENCES loot(LootID)
 );
