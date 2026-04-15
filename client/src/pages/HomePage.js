@@ -1,28 +1,34 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { getItems } from '../services/api';
+import { getItems, getItemCategories } from '../services/api';
 import ItemCard from '../components/ItemCard';
 
-const ITEM_TYPES = ['material', 'component', 'weapon', 'armor', 'consumable', 'tool', 'misc'];
-const RARITIES   = ['common', 'uncommon', 'rare', 'epic', 'legendary'];
+const RARITIES = ['common', 'uncommon', 'rare', 'epic', 'legendary'];
 
 export default function HomePage() {
   const [items, setItems]           = useState([]);
+  const [categories, setCategories] = useState([]);
   const [search, setSearch]         = useState('');
-  const [typeFilter, setTypeFilter] = useState('');
   const [rarityFilter, setRarityFilter] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
   const [page, setPage]             = useState(1);
   const [pagination, setPagination] = useState(null);
   const [loading, setLoading]       = useState(false);
   const [error, setError]           = useState('');
 
+  useEffect(() => {
+    getItemCategories()
+      .then(data => setCategories(data.categories))
+      .catch(() => {});
+  }, []);
+
   const fetchItems = useCallback(async () => {
     setLoading(true);
     setError('');
     try {
-      const params = { page, limit: 20 };
+      const params = { page, limit: 21 };
       if (search) params.search = search;
-      if (typeFilter) params.category = typeFilter;
       if (rarityFilter) params.rarity = rarityFilter;
+      if (categoryFilter) params.category = categoryFilter;
 
       const data = await getItems(params);
       setItems(data.items);
@@ -32,13 +38,12 @@ export default function HomePage() {
     } finally {
       setLoading(false);
     }
-  }, [search, typeFilter, rarityFilter, page]);
+  }, [search, rarityFilter, categoryFilter, page]);
 
   useEffect(() => {
     fetchItems();
   }, [fetchItems]);
 
-  // Reset to page 1 when filters change
   function handleSearchChange(e) {
     setSearch(e.target.value);
     setPage(1);
@@ -51,7 +56,6 @@ export default function HomePage() {
         <p className="page-subtitle">Search and browse all Arc Raiders items, materials, and gear</p>
       </div>
 
-      {/* Search & Filters */}
       <div className="filters-bar">
         <input
           type="text"
@@ -63,17 +67,6 @@ export default function HomePage() {
 
         <select
           className="filter-select"
-          value={typeFilter}
-          onChange={(e) => { setTypeFilter(e.target.value); setPage(1); }}
-        >
-          <option value="">All Types</option>
-          {ITEM_TYPES.map((t) => (
-            <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>
-          ))}
-        </select>
-
-        <select
-          className="filter-select"
           value={rarityFilter}
           onChange={(e) => { setRarityFilter(e.target.value); setPage(1); }}
         >
@@ -82,15 +75,22 @@ export default function HomePage() {
             <option key={r} value={r}>{r.charAt(0).toUpperCase() + r.slice(1)}</option>
           ))}
         </select>
+
+        <select
+          className="filter-select"
+          value={categoryFilter}
+          onChange={(e) => { setCategoryFilter(e.target.value); setPage(1); }}
+        >
+          <option value="">All Categories</option>
+          {categories.map((c) => (
+            <option key={c.CategoryID} value={c.Name}>{c.Name}</option>
+          ))}
+        </select>
       </div>
 
-      {/* Error */}
       {error && <div className="error-msg">{error}</div>}
-
-      {/* Loading */}
       {loading && <div className="loading">Loading items...</div>}
 
-      {/* Item Grid */}
       {!loading && items.length === 0 && !error && (
         <div className="empty-state">No items found. Try different filters.</div>
       )}
@@ -101,7 +101,6 @@ export default function HomePage() {
         ))}
       </div>
 
-      {/* Pagination */}
       {pagination && pagination.totalPages > 1 && (
         <div className="pagination">
           <button

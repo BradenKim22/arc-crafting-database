@@ -11,17 +11,17 @@ const RARITY_COLORS = {
 
 function TreeNode({ node, depth = 0 }) {
   const [expanded, setExpanded] = useState(true);
-  const hasChildren = node.ingredients && node.ingredients.length > 0;
+  const hasSources = node.sources && node.sources.length > 0;
   const rarity = (node.rarity || 'common').toLowerCase();
   const color = RARITY_COLORS[rarity] || '#9ca3af';
 
   return (
     <div className="tree-node" style={{ marginLeft: depth * 28 }}>
-      <div className="tree-node-header" onClick={() => hasChildren && setExpanded(!expanded)}>
-        {hasChildren && (
+      <div className="tree-node-header" onClick={() => hasSources && setExpanded(!expanded)}>
+        {hasSources && (
           <span className="tree-toggle">{expanded ? '▾' : '▸'}</span>
         )}
-        {!hasChildren && <span className="tree-leaf">●</span>}
+        {!hasSources && <span className="tree-leaf">●</span>}
 
         <Link
           to={`/items/${node.lootId}`}
@@ -29,7 +29,7 @@ function TreeNode({ node, depth = 0 }) {
           style={{ color }}
           onClick={(e) => e.stopPropagation()}
         >
-          {node.quantity ? `${node.quantity}x ` : ''}{node.name}
+          {node.yieldsQty ? `${node.yieldsQty}x yield ← ` : ''}{node.name}
         </Link>
 
         <span className={`rarity-badge rarity-${rarity} badge-sm`}>
@@ -39,15 +39,11 @@ function TreeNode({ node, depth = 0 }) {
         {node.category && (
           <span className="tree-type">{node.category}</span>
         )}
-
-        {node.station && (
-          <span className="tree-station">@ {node.station}</span>
-        )}
       </div>
 
-      {hasChildren && expanded && (
+      {hasSources && expanded && (
         <div className="tree-children">
-          {node.ingredients.map((child, i) => (
+          {node.sources.map((child, i) => (
             <TreeNode key={`${child.lootId}-${i}`} node={child} depth={depth + 1} />
           ))}
         </div>
@@ -56,7 +52,7 @@ function TreeNode({ node, depth = 0 }) {
   );
 }
 
-export default function CraftingTree({ tree }) {
+export default function RecyclingTree({ tree }) {
   if (!tree) return null;
 
   return (

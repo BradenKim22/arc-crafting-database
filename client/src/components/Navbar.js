@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
@@ -11,35 +11,37 @@ export default function Navbar() {
     navigate('/');
   }
 
+  function navClass({ isActive }) {
+    return `navbar-link ${isActive ? 'navbar-link-active' : ''}`;
+  }
+
   return (
     <nav className="navbar">
       <div className="navbar-inner">
-        <Link to="/" className="navbar-brand">
-          <span className="brand-icon">⚡</span>
+        <NavLink to="/" end className="navbar-brand">
+          <span className="brand-icon">△</span>
           <span>ARC RAIDERS</span>
-        </Link>
+        </NavLink>
 
         <div className="navbar-links">
-          <Link to="/">Items</Link>
-          <Link to="/recipes">Recipes</Link>
+          <NavLink to="/" end className={navClass}>Items</NavLink>
+          <NavLink to="/recipes" className={navClass}>Recipes</NavLink>
           {user ? (
             <>
-              <span className="navbar-user">
-                {user.username}
-              </span>
-              <Link to="/account" className="btn btn-sm">
-                Account
-              </Link>
-              <button onClick={handleLogout} className="btn btn-sm">
+              <NavLink to="/stash" className={navClass}>My Stash</NavLink>
+              {user.isAdmin && (
+                <NavLink to="/admin" className={navClass}>Admin</NavLink>
+              )}
+              <NavLink to="/account" className={navClass}>Account</NavLink>
+              <span className="navbar-user">{user.username}</span>
+              <button onClick={handleLogout} className="btn btn-sm btn-logout">
                 Logout
               </button>
             </>
           ) : (
             <>
-              <Link to="/login">Login</Link>
-              <Link to="/register" className="btn btn-sm btn-accent">
-                Register
-              </Link>
+              <NavLink to="/login" className={navClass}>Login</NavLink>
+              <NavLink to="/register" className={navClass}>Register</NavLink>
             </>
           )}
         </div>

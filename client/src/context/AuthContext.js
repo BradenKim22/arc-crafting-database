@@ -21,7 +21,7 @@ export function AuthProvider({ children }) {
 
   function loginUser(token, userData) {
     localStorage.setItem('arc_token', token);
-    setUser(userData);
+    setUser({ ...userData, isAdmin: !!userData.isAdmin });
   }
 
   function logoutUser() {

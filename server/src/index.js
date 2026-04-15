@@ -12,6 +12,8 @@ const authRoutes    = require('./routes/auth');
 const accountRoutes = require('./routes/account');
 const itemRoutes    = require('./routes/items');
 const recipeRoutes  = require('./routes/recipes');
+const adminRoutes   = require('./routes/admin');
+const stashRoutes   = require('./routes/stash');
 const pool          = require('./config/db');
 
 const app  = express();
@@ -31,10 +33,11 @@ app.use(cors({
 // Parse JSON bodies (limit size to prevent abuse)
 app.use(express.json({ limit: '1mb' }));
 
-// Rate limiting — 100 requests per 15 minutes per IP
+// Rate limiting — 1000 requests per 15 minutes per IP
+// (generous for local dev; tighten in production via env vars)
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: parseInt(process.env.RATE_LIMIT_MAX, 10) || 1000,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Too many requests, please try again later.' },
@@ -44,7 +47,7 @@ app.use('/api/', limiter);
 // Stricter rate limit on auth endpoints to prevent brute-force
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 20,
+  max: 50,
   message: { error: 'Too many auth attempts, please try again later.' },
 });
 app.use('/api/auth', authLimiter);
@@ -54,6 +57,8 @@ app.use('/api/auth',    authRoutes);
 app.use('/api/account', accountRoutes);
 app.use('/api/items',   itemRoutes);
 app.use('/api/recipes', recipeRoutes);
+app.use('/api/admin',   adminRoutes);
+app.use('/api/stash',   stashRoutes);
 
 // Health check
 app.get('/api/health', async (req, res) => {

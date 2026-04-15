@@ -10,7 +10,7 @@ const SALT_ROUNDS = 12;
 // Helper: generate a JWT for a user row
 function signToken(user) {
   return jwt.sign(
-    { id: user.UserID, username: user.Username, email: user.Email },
+    { id: user.UserID, username: user.Username, email: user.Email, isAdmin: !!user.IsAdmin },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
   );
@@ -90,7 +90,7 @@ async function login(req, res) {
     res.json({
       message: 'Login successful',
       token,
-      user: { id: user.UserID, username: user.Username, email: user.Email, gamertag: user.GamerTag },
+      user: { id: user.UserID, username: user.Username, email: user.Email, gamertag: user.GamerTag, isAdmin: !!user.IsAdmin },
     });
   } catch (err) {
     console.error('Login error:', err);
@@ -102,7 +102,7 @@ async function login(req, res) {
 async function getProfile(req, res) {
   try {
     const [rows] = await pool.query(
-      'SELECT UserID, Username, Email, GamerTag, CreatedAt FROM users WHERE UserID = ?',
+      'SELECT UserID, Username, Email, GamerTag, IsAdmin, CreatedAt FROM users WHERE UserID = ?',
       [req.user.id]
     );
     if (rows.length === 0) {
@@ -114,6 +114,7 @@ async function getProfile(req, res) {
       username:  row.Username,
       email:     row.Email,
       gamertag:  row.GamerTag,
+      isAdmin:   !!row.IsAdmin,
       createdAt: row.CreatedAt,
     }});
   } catch (err) {
